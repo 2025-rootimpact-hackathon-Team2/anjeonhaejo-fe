@@ -1,14 +1,16 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
 import UserReportView from './pages/user/UserReportView';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <Routes>
-        <Route path="/user" element={<UserReportView />} />
+        <Route element={<Layout />}>
+          <Route path="/user" element={<UserReportView />} />
+          <Route path="/" element={<Dashboard />} />
+        </Route>
       </Routes>
     </>
   );
