@@ -1,0 +1,88 @@
+.container {
+  width: 403px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 25px 20px;
+  background-color: var(--color-white);
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text-darkblue);
+  margin-bottom: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #F1F4F9;
+}
+
+thead th {
+  height: 40px;
+  text-align: center;
+}
+
+tbody tr {
+  height: 55px;
+  border-bottom: 1px solid #DBDBDE;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* 컬럼별 너비 설정 */
+tr > *:nth-child(1) { width: 75px; }
+tr > *:nth-child(2) { width: 90px; }
+tr > *:nth-child(3) { width: 130px; }
+tr > *:nth-child(4) { width: 66px; }
+
+tbody td {
+  height: 55px;
+  text-align: center;
+}
+
+tbody td:nth-child(1) {
+  font-weight: 600;
+}
+
+tbody td:nth-child(2) {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
+  padding: 0 10px;
+}
+
+tbody td:nth-child(3) {
+  font-weight: 600;
+}
+
+tbody td:nth-child(3) > span:first-child {
+  color: #8D8D8D;
+  margin-right: 3px;
+  &.countWarning {
+    color: var(--color-red);
+  }
+}
+
+/* 테이블 헤더 모서리 둥글게 */
+thead tr:first-child th:first-child { border-top-left-radius: 8px; }
+thead tr:first-child th:last-child { border-top-right-radius: 8px; }
+thead tr:last-child th:first-child { border-bottom-left-radius: 8px; }
+thead tr:last-child th:last-child { border-bottom-right-radius: 8px; }
