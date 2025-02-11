@@ -1,0 +1,50 @@
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background-color: var(--color-white);
+  border-right: 1px solid var(--color-border);
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 25px 30px;
+}
+
+.sidebarHeader > div > p {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.sidebarHeader > div > p.name {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.sidebarMenu {
+  margin-top: 21px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarMenu > .menuItem {
+  display: flex;
+  height: 48px;
+  padding: 0 30px;
+  align-items: center;
+  gap: 11px;
+  cursor: pointer;
+  color: var(--color-gray);
+}
+
+.sidebarMenu > .menuItem > p {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sidebarMenu > .menuItem.selected {
+  background-color: var(--color-background);
+  color: #121212;
+}
+

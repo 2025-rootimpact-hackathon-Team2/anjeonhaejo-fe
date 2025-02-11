@@ -12,13 +12,14 @@
 .logo {
   font-size: 14px;
   font-weight: 700;
+  width: 210px;
 }
 
 .dateTime {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-left: 110px;
+  margin-left: 13px;
   font-size: 12px;
   color: var(--color-text-gray);
 }
