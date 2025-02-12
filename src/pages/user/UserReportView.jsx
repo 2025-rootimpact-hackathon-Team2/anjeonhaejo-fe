@@ -23,6 +23,22 @@ export default function UserReportView() {
     '점검필요',
   ]);
   const fileInputRef = useRef(null);
+  const [tagList, setTagList] = useState([]);
+  const [activeTags, setActiveTags] = useState(new Set());
+
+  const handleTagClick = (tag) => {
+    console.log(tag, '클릭태그');
+    const newActiveTags = new Set(activeTags);
+    if (newActiveTags.has(tag)) {
+      newActiveTags.delete(tag);
+      setTagList(tagList.filter((item) => item !== tag));
+    } else {
+      newActiveTags.add(tag);
+      setTagList([...tagList, tag]);
+    }
+    console.log(newActiveTags);
+    setActiveTags(newActiveTags);
+  };
 
   return (
     <div className={styles.container}>
@@ -123,7 +139,13 @@ export default function UserReportView() {
             <span className={styles.p_subTitle}>작업 환경</span>
             <ul className={styles.p_tagBox}>
               {envTags.map((tag, index) => (
-                <li className={styles.p_tagText} key={index}>
+                <li
+                  className={`${styles.p_tagText} ${
+                    activeTags.has(tag) ? styles.active : ''
+                  }`}
+                  key={index}
+                  onClick={() => handleTagClick(tag)}
+                >
                   #{tag}
                 </li>
               ))}
@@ -133,7 +155,13 @@ export default function UserReportView() {
             <span className={styles.p_subTitle}>긴급도</span>
             <ul className={styles.p_tagBox}>
               {urgTags.map((tag, index) => (
-                <li className={styles.p_tagText} key={index}>
+                <li
+                  className={`${styles.p_tagText} ${
+                    activeTags.has(tag) ? styles.active : ''
+                  }`}
+                  key={index}
+                  onClick={() => handleTagClick(tag)}
+                >
                   #{tag}
                 </li>
               ))}
