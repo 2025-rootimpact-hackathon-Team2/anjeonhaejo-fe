@@ -35,7 +35,7 @@ thead th {
 }
 
 tbody tr {
-  height: 55px;
+  height: 50px;
   border-bottom: 1px solid #DBDBDE;
 }
 
@@ -50,7 +50,7 @@ tr > *:nth-child(3) { width: 130px; }
 tr > *:nth-child(4) { width: 66px; }
 
 tbody td {
-  height: 55px;
+  height: 50px;
   text-align: center;
 }
 
