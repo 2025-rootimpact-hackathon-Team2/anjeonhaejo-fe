@@ -4,6 +4,7 @@ import styles from './UserReportView.module.css';
 
 export default function UserReportView() {
   const [isOpen, setIsOpen] = useState(false);
+  const [workSpace, setWorkSpace] = useState(1);
   const [machineTags, setMachineTags] = useState([
     '기계소음이상',
     '누수발견',
@@ -43,8 +44,8 @@ export default function UserReportView() {
   return (
     <div className={styles.container}>
       <h1>특이사항 작성</h1>
-      <div className={styles.p_sectionList}>
-        <p className={`${styles.p_section} ${styles.active}`}>
+      <div className={styles.sectionList}>
+        <p className={`${styles.section} ${styles.active}`}>
           <span>A</span>구역
         </p>
         <p className={`${styles.p_tagText} ${styles.active}`}>#적재물불안정</p>
@@ -112,16 +113,48 @@ export default function UserReportView() {
             <span className={styles.p_subTitle}>구역</span>
             <ul className={styles.p_sectionList}>
               <li className={styles.p_section}>
-                <span>A</span>구역
+                <input
+                  type="radio"
+                  id="optionA"
+                  name="section"
+                  value="1"
+                  checked={workSpace == 1}
+                  onChange={(e) => setWorkSpace(e.target.value)}
+                />
+                <label htmlFor="optionA">A 구역</label>
               </li>
               <li className={styles.p_section}>
-                <span>B</span>구역
+                <input
+                  type="radio"
+                  id="optionB"
+                  name="section"
+                  value="2"
+                  checked={workSpace == 2}
+                  onChange={(e) => setWorkSpace(e.target.value)}
+                />
+                <label htmlFor="optionB">B 구역</label>
               </li>
               <li className={styles.p_section}>
-                <span>C</span>구역
+                <input
+                  type="radio"
+                  id="optionC"
+                  name="section"
+                  value="3"
+                  checked={workSpace == 3}
+                  onChange={(e) => setWorkSpace(e.target.value)}
+                />
+                <label htmlFor="optionC">C 구역</label>
               </li>
               <li className={styles.p_section}>
-                <span>D</span>구역
+                <input
+                  type="radio"
+                  id="optionD"
+                  name="section"
+                  value="4"
+                  checked={workSpace == 4}
+                  onChange={(e) => setWorkSpace(e.target.value)}
+                />
+                <label htmlFor="optionD">D 구역</label>
               </li>
             </ul>
           </div>
@@ -129,7 +162,13 @@ export default function UserReportView() {
             <span className={styles.p_subTitle}>기계</span>
             <ul className={styles.p_tagBox}>
               {machineTags.map((tag, index) => (
-                <li className={styles.p_tagText} key={index}>
+                <li
+                  className={`${styles.p_tagText} ${
+                    activeTags.has(tag) ? styles.active : ''
+                  }`}
+                  key={index}
+                  onClick={() => handleTagClick(tag)}
+                >
                   #{tag}
                 </li>
               ))}
