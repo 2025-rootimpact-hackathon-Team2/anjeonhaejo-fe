@@ -129,7 +129,7 @@ h1 {
   letter-spacing: -0.0075rem;
 }
 
-.p_sectionList {
+.sectionList {
   display: flex;
   flex-direction: row;
   gap: 0.375rem;
@@ -158,7 +158,7 @@ textarea {
   padding: 0.5rem;
 }
 
-.p_section {
+.section {
   border-radius: 1.875rem;
   background: #f1f4f9;
 
@@ -177,7 +177,7 @@ textarea {
   align-items: center;
 }
 
-.p_section span {
+.section span {
   width: 1.3125rem;
   height: 1.3125rem;
   flex-shrink: 0;
@@ -189,8 +189,42 @@ textarea {
   margin: 0 0.4rem;
 }
 
+.p_sectionList {
+  display: flex;
+  height: 1.75rem;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+
+  margin: 1rem 0;
+}
+
+.p_sectionList > li {
+  display: flex;
+  align-items: center;
+
+  width: 4.5rem;
+  height: 1.75rem;
+  padding: 0rem 0.5625rem 0rem 0.6875rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+
+  border-radius: 0.25rem;
+  border: 1px solid rgba(153, 159, 174, 0.5);
+
+  color: rgba(0, 15, 52, 0.4);
+  font-family: Pretendard;
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.00625rem;
+}
+
 .p_section:not(.active):nth-child(1) span {
-  background-color: #298a66;
+  background-color: rgba(28, 142, 255, 0.6);
 }
 
 .p_section:not(.active):nth-child(2) span {
