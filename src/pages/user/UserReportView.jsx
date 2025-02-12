@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './UserReportView.module.css';
 
@@ -22,25 +22,61 @@ export default function UserReportView() {
     '즉시조치필요',
     '점검필요',
   ]);
+  const fileInputRef = useRef(null);
+  const [tagList, setTagList] = useState([]);
+  const [activeTags, setActiveTags] = useState(new Set());
+
+  const handleTagClick = (tag) => {
+    console.log(tag, '클릭태그');
+    const newActiveTags = new Set(activeTags);
+    if (newActiveTags.has(tag)) {
+      newActiveTags.delete(tag);
+      setTagList(tagList.filter((item) => item !== tag));
+    } else {
+      newActiveTags.add(tag);
+      setTagList([...tagList, tag]);
+    }
+    console.log(newActiveTags);
+    setActiveTags(newActiveTags);
+  };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>특이사항 작성</h1>
-      <div>
-        <span>구역</span>
-        <span>#적재물불안정</span>
+      <div className={styles.p_sectionList}>
+        <p className={`${styles.p_section} ${styles.active}`}>
+          <span>A</span>구역
+        </p>
+        <p className={`${styles.p_tagText} ${styles.active}`}>#적재물불안정</p>
         <img
           onClick={() => setIsOpen(true)}
           src="/asset/images/user/plus.png"
           alt="plus"
+          className={styles.plus}
         />
       </div>
-      <textarea name="" id="" cols="30" rows="10"></textarea>
-      <div>
+      <div className={styles.textAreaBox}>
+        <textarea
+          name=""
+          id=""
+          placeholder="내용을 작성하세요."
+          cols="30"
+          rows="10"
+        ></textarea>
+        <button type="button" onClick={() => fileInputRef.current.click()}>
+          <img src="/asset/images/user/camera.png" alt="" />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*;capture=camera"
+          />
+        </button>
+      </div>
+      <div className={styles.noticeBox}>
         <input type="checkbox" />
         <span>전체 공지</span>
       </div>
-      <div>
+      <div className={styles.btnBox}>
         <button>취소</button>
         <button>확인</button>
       </div>
@@ -103,7 +139,13 @@ export default function UserReportView() {
             <span className={styles.p_subTitle}>작업 환경</span>
             <ul className={styles.p_tagBox}>
               {envTags.map((tag, index) => (
-                <li className={styles.p_tagText} key={index}>
+                <li
+                  className={`${styles.p_tagText} ${
+                    activeTags.has(tag) ? styles.active : ''
+                  }`}
+                  key={index}
+                  onClick={() => handleTagClick(tag)}
+                >
                   #{tag}
                 </li>
               ))}
@@ -113,7 +155,13 @@ export default function UserReportView() {
             <span className={styles.p_subTitle}>긴급도</span>
             <ul className={styles.p_tagBox}>
               {urgTags.map((tag, index) => (
-                <li className={styles.p_tagText} key={index}>
+                <li
+                  className={`${styles.p_tagText} ${
+                    activeTags.has(tag) ? styles.active : ''
+                  }`}
+                  key={index}
+                  onClick={() => handleTagClick(tag)}
+                >
                   #{tag}
                 </li>
               ))}
