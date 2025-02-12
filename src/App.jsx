@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Modal from './components/Modal';
 import { useState } from 'react';
 import MobileLayout from './components/mobile/MobileLayout';
+import MonthReport from './pages/MonthReport';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/report" element={<MonthReport />} />
         </Route>
         <Route element={<MobileLayout />}>
           <Route path="/user" element={<UserReportView />} />

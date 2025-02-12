@@ -1,0 +1,50 @@
+.section {
+  width: 22.5625rem;
+  height: 12.6875rem;
+  flex-shrink: 0;
+
+  border-radius: 0.5625rem;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+
+  /* 해커톤 그림자 */
+  box-shadow: 7.5px 8.5px 20px 0px rgba(218, 228, 233, 0.25);
+}
+
+.titleBox {
+  margin: 1.81rem 1.6rem;
+}
+
+.section h2 {
+  color: #151d48;
+  font-family: Pretendard;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.01rem;
+  margin: 0.2rem 0;
+}
+
+.section p {
+  color: #151d48;
+  font-family: Pretendard;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.02rem;
+}
+
+.barGraph {
+  height: 1rem;
+  background-color: white;
+  margin-top: 1rem;
+  transition: width 0.3s ease;
+  border-radius: 0.71875rem;
+  width: 19.6875rem;
+  height: 0.6875rem;
+  flex-shrink: 0;
+
+  margin-top: 4.9rem;
+}
