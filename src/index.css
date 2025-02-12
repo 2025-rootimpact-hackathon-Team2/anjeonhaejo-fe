@@ -14,11 +14,16 @@
   --color-green: #00B69B;
   --color-blue: #3A37EF;
   --color-skyblue: #1C8EFF;
+  --color-lightpurple: #9F9FF8;
+  --color-purple: #C050FC;
   --color-gray: #777777;
   --color-black: #000000;
   
   /* Background */
   --color-background: #F5F7FA;
+  --color-background-red: #FFE2E5;
+  --color-background-yellow: #FFF4DE;
+
 
   /* Border */
   --color-border: #DCDFE5;
@@ -32,6 +37,7 @@
   /* Text Colors */
   --color-text-lightgray: #737791;
   --color-text-gray: #545454;
+  --color-text-bluegray: #425166;
   --color-text-darkblue: #151D48;
   
   /* Icon Colors */
@@ -56,6 +62,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
