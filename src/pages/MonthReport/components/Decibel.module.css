@@ -1,6 +1,6 @@
 .section {
   width: 22.5625rem;
-  height: 12.6875rem;
+  height: 9.9375rem;
   flex-shrink: 0;
 
   border-radius: 0.5625rem;
@@ -46,5 +46,5 @@
   height: 0.6875rem;
   flex-shrink: 0;
 
-  margin-top: 4.9rem;
+  margin-top: 2rem;
 }
