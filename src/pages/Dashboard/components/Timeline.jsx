@@ -17,7 +17,7 @@ const Timeline = ({ timeLinedatas }) => {
             <div className={styles.contentItemTitle}>
               {data.decibel >= DECIBEL_LEVEL.DANGER ? <DangerTriangle /> : <WarningTriangle />}
             <div className={styles.contentItemTitleText}>
-              <p className={styles.contentItemTitleTextLabel}>
+              <p className={`${styles.contentItemTitleTextLabel} ${data.decibel >= DECIBEL_LEVEL.DANGER ? styles.danger : styles.warning}`}>
                 {data.decibel >= DECIBEL_LEVEL.DANGER ? '위험' : '주의'}
               </p>
               <p className={styles.contentItemTitleTextDecibel}>{data.decibel} dB</p>

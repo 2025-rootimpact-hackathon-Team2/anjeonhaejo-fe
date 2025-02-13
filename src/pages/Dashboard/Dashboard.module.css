@@ -8,9 +8,10 @@
   padding: 35px 37px;
 }
 
-.container > .left {
+.container > .top {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 32px;
+  width: 100%;
 }
