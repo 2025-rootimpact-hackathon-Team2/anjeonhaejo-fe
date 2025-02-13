@@ -1,5 +1,6 @@
 import styles from './MonthReport.module.css';
 import Decibel from './components/Decibel';
+import MonthTrend from './components/MonthTrend';
 
 const MonthReport = () => {
   return (
@@ -21,6 +22,7 @@ const MonthReport = () => {
           color="#18CE55"
         ></Decibel>
       </div>
+      <MonthTrend />
     </div>
   );
 };
