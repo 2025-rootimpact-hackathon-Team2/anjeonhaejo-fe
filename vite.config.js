@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), svgr()],
   server: {
     port: 3000,
+    host: true,
   },
   resolve: {
     alias: [
