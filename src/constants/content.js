@@ -1,7 +1,7 @@
 // 데시벨 기준
 export const DECIBEL_LEVEL = {
-  WARNING: 90,
-  DANGER: 115,
+  WARNING: 95,
+  DANGER: 105,
 }
 
 // 소음 횟수 기준
