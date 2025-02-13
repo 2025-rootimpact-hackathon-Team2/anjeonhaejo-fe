@@ -1,6 +1,8 @@
 import styles from './MonthReport.module.css';
 import Decibel from './components/Decibel';
+import Issue from './components/Issue';
 import MonthTrend from './components/MonthTrend';
+import Safety from './components/Safety';
 
 const MonthReport = () => {
   return (
@@ -23,6 +25,8 @@ const MonthReport = () => {
         ></Decibel>
       </div>
       <MonthTrend />
+      <Issue />
+      <Safety />
     </div>
   );
 };
