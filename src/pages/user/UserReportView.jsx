@@ -1,52 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import styles from './UserReportView.module.css';
-import { get } from '../../api/base';
+import { post } from '../../api/base';
+import useReportForm from '../../hooks/MobileHooks';
 
 export default function UserReportView() {
   const [isOpen, setIsOpen] = useState(false);
-  const [workSpace, setWorkSpace] = useState(1);
   const [content, setContent] = useState('');
   const fileInputRef = useRef(null);
-  const [tagList, setTagList] = useState([]);
-  const [activeTags, setActiveTags] = useState(new Set());
 
-  const fetchTags = async () => {
-    try {
-      const response = await get('/tag');
-      setTagList(response.data);
-      console.log('Get fetched:', response.data);
-    } catch (error) {
-      console.error('Get fetched error:', error);
-    }
-  };
+  const {
+    workSpace,
+    activeWorkSpace,
+    tagList,
+    activeTags,
+    handleTagClick,
+    handleWorkSpaceChange,
+  } = useReportForm();
 
-  useEffect(() => {
-    const fetctInitData = async () => {
-      await fetchTags();
-    };
-
-    fetctInitData();
-  }, []);
-
-  const handleTagClick = (tag) => {
-    const newActiveTags = new Set(activeTags);
-    if (newActiveTags.has(tag)) {
-      newActiveTags.delete(tag);
-    } else {
-      newActiveTags.add(tag);
-    }
-    console.log(newActiveTags);
-    setActiveTags(newActiveTags);
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const params = {
       content: content,
       workerLineId: workSpace,
-      tagIds: activeTags,
+      tagNames: Array.from(activeTags),
     };
-    console.log(params);
+
+    try {
+      const response = await post('/report/create', params);
+      console.log('Report submitted:', response.data);
+    } catch (error) {
+      console.error('Error submitting report:', error);
+    }
   };
 
   return (
@@ -54,7 +38,7 @@ export default function UserReportView() {
       <h1>특이사항 작성</h1>
       <div className={styles.sectionList}>
         <p className={`${styles.section} ${styles.active}`}>
-          <span>A</span>구역
+          <span>{activeWorkSpace.split(' ')[0]}</span>구역
         </p>
         {Array.from(activeTags).map((tag, index) => (
           <p className={`${styles.p_tagText} ${styles.active}`} key={index}>
@@ -70,8 +54,6 @@ export default function UserReportView() {
       </div>
       <div className={styles.textAreaBox}>
         <textarea
-          name=""
-          id=""
           placeholder="내용을 작성하세요."
           cols="30"
           rows="10"
@@ -128,7 +110,7 @@ export default function UserReportView() {
                   name="section"
                   value="1"
                   checked={workSpace == 1}
-                  onChange={(e) => setWorkSpace(e.target.value)}
+                  onChange={handleWorkSpaceChange}
                 />
                 <label htmlFor="optionA">A 구역</label>
               </li>
@@ -139,7 +121,7 @@ export default function UserReportView() {
                   name="section"
                   value="2"
                   checked={workSpace == 2}
-                  onChange={(e) => setWorkSpace(e.target.value)}
+                  onChange={handleWorkSpaceChange}
                 />
                 <label htmlFor="optionB">B 구역</label>
               </li>
@@ -150,7 +132,7 @@ export default function UserReportView() {
                   name="section"
                   value="3"
                   checked={workSpace == 3}
-                  onChange={(e) => setWorkSpace(e.target.value)}
+                  onChange={handleWorkSpaceChange}
                 />
                 <label htmlFor="optionC">C 구역</label>
               </li>
@@ -161,7 +143,7 @@ export default function UserReportView() {
                   name="section"
                   value="4"
                   checked={workSpace == 4}
-                  onChange={(e) => setWorkSpace(e.target.value)}
+                  onChange={handleWorkSpaceChange}
                 />
                 <label htmlFor="optionD">D 구역</label>
               </li>
