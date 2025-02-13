@@ -7,6 +7,8 @@ import Modal from './components/Modal';
 import { useState } from 'react';
 import MobileLayout from './components/mobile/MobileLayout';
 import MonthReport from './pages/MonthReport';
+import Login from './pages/Login';
+import HeaderLayout from './components/HeaderLayout';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,6 +21,9 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/report" element={<MonthReport />} />
           <Route path="/setting" element={<Setting />} />
+        </Route>
+        <Route element={<HeaderLayout />}>
+          <Route path="/login" element={<Login />} />
         </Route>
         <Route element={<MobileLayout />}>
           <Route path="/user" element={<UserReportView />} />
