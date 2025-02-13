@@ -1,44 +1,52 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './UserReportView.module.css';
+import { get } from '../../api/base';
 
 export default function UserReportView() {
   const [isOpen, setIsOpen] = useState(false);
   const [workSpace, setWorkSpace] = useState(1);
-  const [machineTags, setMachineTags] = useState([
-    '기계소음이상',
-    '누수발견',
-    '과열감지',
-    '부품손상',
-  ]);
-  const [envTags, setEnvTags] = useState([
-    '환기불량',
-    '적재물불안정',
-    '밀폐공간',
-    '추락함',
-    '기계에 끼임',
-  ]);
-  const [urgTags, setUrgTags] = useState([
-    '조치완료',
-    '즉시조치필요',
-    '점검필요',
-  ]);
+  const [content, setContent] = useState('');
   const fileInputRef = useRef(null);
   const [tagList, setTagList] = useState([]);
   const [activeTags, setActiveTags] = useState(new Set());
 
+  const fetchTags = async () => {
+    try {
+      const response = await get('/tag');
+      setTagList(response.data);
+      console.log('Get fetched:', response.data);
+    } catch (error) {
+      console.error('Get fetched error:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetctInitData = async () => {
+      await fetchTags();
+    };
+
+    fetctInitData();
+  }, []);
+
   const handleTagClick = (tag) => {
-    console.log(tag, '클릭태그');
     const newActiveTags = new Set(activeTags);
     if (newActiveTags.has(tag)) {
       newActiveTags.delete(tag);
-      setTagList(tagList.filter((item) => item !== tag));
     } else {
       newActiveTags.add(tag);
-      setTagList([...tagList, tag]);
     }
     console.log(newActiveTags);
     setActiveTags(newActiveTags);
+  };
+
+  const handleSubmit = () => {
+    const params = {
+      content: content,
+      workerLineId: workSpace,
+      tagIds: activeTags,
+    };
+    console.log(params);
   };
 
   return (
@@ -48,7 +56,11 @@ export default function UserReportView() {
         <p className={`${styles.section} ${styles.active}`}>
           <span>A</span>구역
         </p>
-        <p className={`${styles.p_tagText} ${styles.active}`}>#적재물불안정</p>
+        {Array.from(activeTags).map((tag, index) => (
+          <p className={`${styles.p_tagText} ${styles.active}`} key={index}>
+            #{tag}
+          </p>
+        ))}
         <img
           onClick={() => setIsOpen(true)}
           src="/asset/images/user/plus.png"
@@ -63,6 +75,7 @@ export default function UserReportView() {
           placeholder="내용을 작성하세요."
           cols="30"
           rows="10"
+          onChange={(e) => setContent(e.target.value)}
         ></textarea>
         <button type="button" onClick={() => fileInputRef.current.click()}>
           <img src="/asset/images/user/camera.png" alt="" />
@@ -73,13 +86,9 @@ export default function UserReportView() {
           />
         </button>
       </div>
-      <div className={styles.noticeBox}>
-        <input type="checkbox" />
-        <span>전체 공지</span>
-      </div>
       <div className={styles.btnBox}>
         <button>취소</button>
-        <button>확인</button>
+        <button onClick={handleSubmit}>확인</button>
       </div>
 
       {/* 팝업 */}
@@ -158,53 +167,30 @@ export default function UserReportView() {
               </li>
             </ul>
           </div>
-          <div className={styles.p_elementBox}>
-            <span className={styles.p_subTitle}>기계</span>
-            <ul className={styles.p_tagBox}>
-              {machineTags.map((tag, index) => (
-                <li
-                  className={`${styles.p_tagText} ${
-                    activeTags.has(tag) ? styles.active : ''
-                  }`}
-                  key={index}
-                  onClick={() => handleTagClick(tag)}
-                >
-                  #{tag}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={styles.p_elementBox}>
-            <span className={styles.p_subTitle}>작업 환경</span>
-            <ul className={styles.p_tagBox}>
-              {envTags.map((tag, index) => (
-                <li
-                  className={`${styles.p_tagText} ${
-                    activeTags.has(tag) ? styles.active : ''
-                  }`}
-                  key={index}
-                  onClick={() => handleTagClick(tag)}
-                >
-                  #{tag}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={styles.p_elementBox}>
-            <span className={styles.p_subTitle}>긴급도</span>
-            <ul className={styles.p_tagBox}>
-              {urgTags.map((tag, index) => (
-                <li
-                  className={`${styles.p_tagText} ${
-                    activeTags.has(tag) ? styles.active : ''
-                  }`}
-                  key={index}
-                  onClick={() => handleTagClick(tag)}
-                >
-                  #{tag}
-                </li>
-              ))}
-            </ul>
+          <div>
+            {tagList.map((category) => {
+              const categoryName = category.categoryName;
+              const tags = category.tagMap ? Object.keys(category.tagMap) : [];
+
+              return (
+                <div className={styles.p_elementBox} key={categoryName}>
+                  <span className={styles.p_subTitle}>{categoryName}</span>
+                  <ul className={styles.p_tagBox}>
+                    {tags.map((tag, index) => (
+                      <li
+                        className={`${styles.p_tagText} ${
+                          activeTags.has(tag) ? styles.active : ''
+                        }`}
+                        key={index}
+                        onClick={() => handleTagClick(tag)} // 태그 클릭 시 active 상태 변경
+                      >
+                        #{tag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       )}
