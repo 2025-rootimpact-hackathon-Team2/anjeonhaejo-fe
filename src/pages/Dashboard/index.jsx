@@ -12,7 +12,7 @@ const Dashboard = () => {
   } = useAudio();
   return (
     <div className={styles.container}>
-      <div className={styles.left}>
+      <div className={styles.top}>
         <Timeline timeLinedatas={timeLinedatas} />
         <NoiseLog noiseLogCount={noiseLogCount} />
       </div>
