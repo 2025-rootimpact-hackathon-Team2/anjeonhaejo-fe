@@ -5,7 +5,7 @@ const NoiseLog = () => {
   return (
     <div className={styles.container}>
       <p className={styles.title}>소음 횟수</p>
-      <table>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>위치</th>

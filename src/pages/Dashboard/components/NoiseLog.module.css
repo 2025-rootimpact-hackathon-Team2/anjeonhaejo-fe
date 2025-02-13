@@ -17,7 +17,7 @@
   margin-bottom: 14px;
 }
 
-table {
+.table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -25,40 +25,41 @@ table {
   overflow: hidden;
 }
 
-thead {
+.table thead {
   background-color: #F1F4F9;
 }
 
-thead th {
+.table thead th {
   height: 40px;
   text-align: center;
 }
 
-tbody tr {
+.table tbody tr {
   height: 50px;
   border-bottom: 1px solid #DBDBDE;
 }
 
-tbody tr:last-child {
+.table tbody tr:last-child {
   border-bottom: none;
 }
 
 /* 컬럼별 너비 설정 */
-tr > *:nth-child(1) { width: 75px; }
-tr > *:nth-child(2) { width: 90px; }
-tr > *:nth-child(3) { width: 130px; }
-tr > *:nth-child(4) { width: 66px; }
+.table tbody tr > *:nth-child(1) { width: 75px; }
+.table tbody tr > *:nth-child(2) { width: 90px; }
+.table tbody tr > *:nth-child(3) { width: 130px; }
+.table tbody tr > *:nth-child(4) { width: 66px; }
 
-tbody td {
+.table tbody td {
   height: 50px;
   text-align: center;
+  border-bottom: 0.5px solid #DBDBDE;
 }
 
-tbody td:nth-child(1) {
+.table tbody td:nth-child(1) {
   font-weight: 600;
 }
 
-tbody td:nth-child(2) {
+.table tbody td:nth-child(2) {
   font-size: 12px;
   display: flex;
   flex-direction: column;
@@ -69,11 +70,15 @@ tbody td:nth-child(2) {
   padding: 0 10px;
 }
 
-tbody td:nth-child(3) {
+.table tbody td:nth-child(3) {
   font-weight: 600;
 }
 
-tbody td:nth-child(3) > span:first-child {
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody td:nth-child(3) > span:first-child {
   color: #8D8D8D;
   margin-right: 3px;
   &.countWarning {
@@ -82,7 +87,7 @@ tbody td:nth-child(3) > span:first-child {
 }
 
 /* 테이블 헤더 모서리 둥글게 */
-thead tr:first-child th:first-child { border-top-left-radius: 8px; }
-thead tr:first-child th:last-child { border-top-right-radius: 8px; }
-thead tr:last-child th:first-child { border-bottom-left-radius: 8px; }
-thead tr:last-child th:last-child { border-bottom-right-radius: 8px; }
+.table thead tr:first-child th:first-child { border-top-left-radius: 8px; }
+.table thead tr:first-child th:last-child { border-top-right-radius: 8px; }
+.table thead tr:last-child th:first-child { border-bottom-left-radius: 8px; }
+.table thead tr:last-child th:last-child { border-bottom-right-radius: 8px; }
