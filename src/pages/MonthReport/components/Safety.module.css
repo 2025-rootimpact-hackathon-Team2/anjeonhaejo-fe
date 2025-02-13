@@ -7,6 +7,11 @@
   border: 0.8px solid #dcdfe5;
   background: #fff;
 
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
   /* 해커톤 그림자 */
   box-shadow: 7.5px 8.5px 20px 0px rgba(218, 228, 233, 0.25);
 
@@ -62,4 +67,88 @@
   line-height: normal;
 
   opacity: 0.8;
+}
+
+.right {
+  background-image: url('/asset/images/basic/right.svg');
+  background-size: cover;
+  background-position: center;
+
+  width: 1rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  aspect-ratio: 10.08/5.04;
+}
+
+.left {
+  background-image: url('/asset/images/basic/left.svg');
+  background-size: cover;
+  background-position: center;
+
+  width: 1rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  aspect-ratio: 10.08/5.04;
+}
+
+.section ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+  width: 5rem;
+}
+
+.section ul li {
+  color: rgba(0, 0, 0, 0.4);
+  font-family: Pretendard;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.006rem;
+
+  margin: 0 0.5rem;
+}
+
+.section ul li.active {
+  color: #575a6f;
+  font-family: Pretendard;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.006rem;
+  margin: 0 0.5rem;
+}
+
+.section ul li:hover {
+  cursor: pointer;
+}
+
+.section .tag {
+  color: #fff;
+  font-family: Pretendard;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.0075rem;
+
+  border-radius: 1.875rem;
+  background: #1c8eff;
+
+  padding: 0.4rem 0.7rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.375rem;
+
+  margin-right: 0.2rem;
+
+  text-align: left;
+  display: inline-block;
+}
+
+.section tr td:nth-child(3) {
+  text-align: left;
 }
