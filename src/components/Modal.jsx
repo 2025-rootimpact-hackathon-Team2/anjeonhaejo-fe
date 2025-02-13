@@ -1,7 +1,7 @@
 import styles from './Modal.module.css';
 import { DangerTriangleBig } from '@assets/icons';
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, handleConfirm, handleCancel }) => {
   return (
     <div className={styles.dim}>
       <div 
@@ -9,17 +9,25 @@ const Modal = ({ onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <DangerTriangleBig />
-        <p className={styles.modalTitle}>Warning!</p>
+        <p className={styles.modalTitle}>위험!</p>
         <p className={styles.modalContent}>
-          A구역에서 120dB 이상의 충돌음을 감지했습니다. <br />
-          대처 및 확인이 필요합니다.
+          A구역에서 105dB 이상의 음을 감지했습니다. <br />
+          분석을 시작합니다.
         </p>
-        <button 
-          className={styles.modalButton} 
-          onClick={onClose}
-        >
-          확인
-        </button>
+        <div>
+          {/* <button 
+            className={`${styles.modalButton} ${styles.cancelButton}`} 
+            onClick={handleCancel}
+          >
+            취소
+          </button> */}
+          <button 
+            className={styles.modalButton} 
+            onClick={handleConfirm}
+          >
+            확인
+          </button>
+        </div>
       </div>
     </div>
   )

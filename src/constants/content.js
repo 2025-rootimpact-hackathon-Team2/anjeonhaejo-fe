@@ -1,6 +1,6 @@
 // 데시벨 기준
 export const DECIBEL_LEVEL = {
-  WARNING: 105,
+  WARNING: 90,
   DANGER: 115,
 }
 

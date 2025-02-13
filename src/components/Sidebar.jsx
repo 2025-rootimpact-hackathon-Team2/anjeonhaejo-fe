@@ -4,17 +4,36 @@ import { useSidebar } from '@hooks/SidebarHooks';
 import Lottie from "lottie-react";
 import recordAnimation from '@assets/lottie/recordAnimation.json';
 import { useSelector } from 'react-redux';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import useDecibel from '@hooks/DecibelHooks';
+import Modal from '@components/Modal';
+import Loading from '@components/Loading';
+
 const Sidebar = () => {
   const { selected, handleMenuClick, handleLogout, user } = useSidebar();
   const decibel = useSelector((state) => state.decibel.value);
   const isRecording = useSelector((state) => state.decibel.isRecording);
-  const { startRecording } = useDecibel();
+  const { startRecording, isModalOpen, setIsModalOpen, handleConfirm, handleCancel, isLoading } = useDecibel();
   const lottieRef = useRef(null);
+
+  useEffect(() => {
+    if (isRecording) {
+      lottieRef.current?.play();
+    } else {
+      lottieRef.current?.stop();
+    }
+  }, [isRecording]);
 
   return (
     <div className={styles.sidebar}>
+      {isModalOpen && 
+        <Modal 
+          onClose={() => setIsModalOpen(false)} 
+          handleConfirm={handleConfirm}
+          handleCancel={handleCancel}
+        />
+      }
+      {!isModalOpen && isRecording && isLoading && <Loading />}
       <div className={styles.sidebarHeader}>
         <Profile />
         <div>

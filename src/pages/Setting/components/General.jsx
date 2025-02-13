@@ -17,7 +17,7 @@ export const General = () => {
             <option value="KR">한국어</option>
           </select>
         </div>
-        <div className={styles.input}>
+        {/* <div className={styles.input}>
           <p>알림설정</p>
           <div className={styles.alarmContainer}>
             <div className={styles.alarmCheckContainer}>
@@ -29,7 +29,7 @@ export const General = () => {
               <p>사고 알림</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

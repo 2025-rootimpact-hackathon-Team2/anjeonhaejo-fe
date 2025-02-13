@@ -16,6 +16,7 @@
   align-items: center;
   gap: 10px;
   padding: 25px 12px 25px 30px;
+  border-bottom: 0.8px solid #E5E8EB;
 }
 
 .sidebarHeader > div > p {
@@ -41,6 +42,7 @@
   gap: 11px;
   cursor: pointer;
   color: var(--color-gray);
+  border-top-right-radius: 20px;
 }
 
 .sidebarMenu > .menuItem > p {
@@ -49,7 +51,7 @@
 }
 
 .sidebarMenu > .menuItem.selected {
-  background-color: var(--color-background);
+  background-color: #F5F6FA;
   color: #121212;
 }
 

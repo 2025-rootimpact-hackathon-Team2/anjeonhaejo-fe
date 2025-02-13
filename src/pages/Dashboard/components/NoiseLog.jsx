@@ -44,7 +44,8 @@ const NoiseLog = ({ noiseLogCount }) => {
               <p>크레인</p>
             </td>
             <td>
-              <span className={styles.countWarning}>2</span>
+              {/* <span className={styles.countWarning}>2</span> */}
+              <span>0</span>
               <span>회</span>
             </td>
             <td>
