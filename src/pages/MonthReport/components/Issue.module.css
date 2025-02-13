@@ -74,6 +74,23 @@
   width: 35%;
 }
 
+.section td:nth-child(2) {
+  color: #151d48;
+  font-family: Poppins;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.00875rem;
+}
+
+.section td:nth-child(2) span {
+  color: #c6cbd5;
+  font-family: Poppins;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+}
+
 .section td:nth-child(3) span {
   border-radius: 1.875rem;
   background: #ff4747;
