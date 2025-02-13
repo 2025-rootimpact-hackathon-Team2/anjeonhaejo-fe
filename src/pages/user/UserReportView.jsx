@@ -26,10 +26,17 @@ export default function UserReportView() {
     };
 
     try {
-      const response = await post('/report/create', params);
-      console.log('Report submitted:', response.data);
+      const response = await post('/report/create?userId=113', params);
+      console.log('Report submitted:', response);
+
+      alert('작성이 완료되었습니다.');
+
+      setContent('');
+      setIsOpen(false);
+      activeTags.clear();
     } catch (error) {
       console.error('Error submitting report:', error);
+      alert('에러가 발생했습니다. 관리자에게 문의하세요.');
     }
   };
 
@@ -57,16 +64,17 @@ export default function UserReportView() {
           placeholder="내용을 작성하세요."
           cols="30"
           rows="10"
+          value={content}
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
-        <button type="button" onClick={() => fileInputRef.current.click()}>
+        {/* <button type="button" onClick={() => fileInputRef.current.click()}>
           <img src="/asset/images/user/camera.png" alt="" />
           <input
             ref={fileInputRef}
             type="file"
             accept="image/*;capture=camera"
           />
-        </button>
+        </button> */}
       </div>
       <div className={styles.btnBox}>
         <button>취소</button>
