@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_BASE = 'http://43.202.242.205:8080';
+export const API_BASE = 'http://15.165.87.88:8080';
 
 const axiosClient = axios.create({
   baseURL: API_BASE,

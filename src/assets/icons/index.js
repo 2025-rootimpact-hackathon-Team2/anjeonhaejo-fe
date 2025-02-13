@@ -3,6 +3,7 @@ import WarningTriangle from './WarningTriangle.svg?react';
 import DangerTriangleSmall from './DangerTriangleSmall.svg?react';
 import DangerTriangleBig from './DangerTriangleBig.svg?react';
 import CheckCircleSmall from './CheckCircleSmall.svg?react';
+import WarningTriangleSmall from './WarningTriangleSmall.svg?react';
 import Profile from './Profile.svg?react';
 import Home from './Home.jsx';
 import Report from './Report.jsx';
@@ -14,6 +15,7 @@ export {
   DangerTriangleSmall,
   DangerTriangleBig,
   CheckCircleSmall,
+  WarningTriangleSmall,
   Profile,
   Home,
   Report,

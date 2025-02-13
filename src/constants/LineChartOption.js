@@ -1,4 +1,4 @@
-import { callback } from "chart.js/helpers";
+import 'chartjs-adapter-date-fns';
 
   // 차트 옵션
   export const options = {
@@ -7,19 +7,6 @@ import { callback } from "chart.js/helpers";
     plugins: {
       legend: {
         display: false,
-        // position: 'top',
-        // align: 'end',
-        // labels: {
-        //   color: 'rgba(0, 0, 0, 0.5)',
-        //   font: {
-        //     size: 12,
-        //   },
-        //   usePointStyle: true,
-        //   pointStyle: 'circle',
-        //   boxWidth: 8,
-        //   boxHeight: 8,
-        //   padding: 16,
-        // }
       },
       title: {
         display: false,
@@ -45,16 +32,26 @@ import { callback } from "chart.js/helpers";
         }
       },
       x: {
+        type: 'time',  // 시간 축으로 변경
+        time: {
+          unit: 'hour',
+          displayFormats: {
+            hour: 'HH:00'
+          },
+          parser: 'HH:mm',  
+        },
         ticks: {
           stepSize: 1,
           color: 'rgba(0, 0, 0, 0.4)',
           font: {
             size: 10
-          }
+          },
         },
         grid: {
           display: false,
-          drawBorder: false
+          drawBorder: true,
+          drawTicks: false,
+          borderDash: [4, 4]
         }
       },
     },
