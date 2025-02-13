@@ -7,7 +7,7 @@ const useDecibel = () => {
   const decibel = useSelector((state) => state.decibel.value);
   const isRecording = useSelector((state) => state.decibel.isRecording);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const [audioUrl, setAudioUrl] = useState(null);
 
@@ -59,7 +59,11 @@ const useDecibel = () => {
     const minDecibels = 0;
     const maxDecibels = 130;
 
-    dispatch(updateDecibel(Math.min(maxDecibels, Math.max(minDecibels, adjustedDecibel))));
+    dispatch(
+      updateDecibel(
+        Math.min(maxDecibels, Math.max(minDecibels, adjustedDecibel))
+      )
+    );
 
     // 기준 데시벨을 넘으면 녹음 실행 (녹음 로직은 그대로 유지)
     if (adjustedDecibel > DECIBEL_THRESHOLD && !isCapturingRef.current) {
@@ -152,6 +156,7 @@ const useDecibel = () => {
     }
 
     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+    console.log('녹음된 파일 크기:', audioBlob.size);
     const url = URL.createObjectURL(audioBlob);
     console.log('녹음된 파일 URL:', url);
     setAudioUrl(url);
@@ -176,7 +181,7 @@ const useDecibel = () => {
     formData.append('file', audioBlob, 'audio.webm');
 
     try {
-      const response = await fetch('http://15.165.87.88:8080/audio/upload', {
+      const response = await fetch('https://api.anjeons.com', {
         method: 'POST',
         body: formData,
       });
@@ -192,12 +197,12 @@ const useDecibel = () => {
 
   const handleConfirm = () => {
     setIsModalOpen(false);
-  }
+  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
     setIsLoading(false);
-  }
+  };
 
   useEffect(() => {
     // setTimeout(() => {
@@ -213,10 +218,10 @@ const useDecibel = () => {
     };
   }, []);
 
-  return { 
-    decibel, 
-    isRecording, 
-    startRecording, 
+  return {
+    decibel,
+    isRecording,
+    startRecording,
     stopRecording,
     isModalOpen,
     setIsModalOpen,
@@ -224,7 +229,6 @@ const useDecibel = () => {
     handleCancel,
     isLoading,
   };
-}
+};
 
 export default useDecibel;
-
