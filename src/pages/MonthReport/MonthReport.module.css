@@ -10,4 +10,13 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  margin-top: 2rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }

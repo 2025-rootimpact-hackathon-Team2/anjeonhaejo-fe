@@ -36,9 +36,15 @@ const MonthReport = () => {
           color="#18CE55"
         ></Decibel>
       </div>
-      <MonthTrend />
-      <Issue />
-      <Safety />
+      <div className={styles.box}>
+        <MonthTrend />
+      </div>
+      <div className={styles.box}>
+        <Issue />
+      </div>
+      <div className={styles.box}>
+        <Safety />
+      </div>
     </div>
   );
 };
