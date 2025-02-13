@@ -5,7 +5,7 @@ const HeaderLayout = () => {
   return (
     <div className={styles.headerLayout}>
       <Header />
-      <main className={styles.main}>
+      <main className={styles.headerLayoutMain}>
         <Outlet />
       </main>
     </div>

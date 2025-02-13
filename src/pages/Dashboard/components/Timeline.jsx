@@ -8,7 +8,7 @@ const Timeline = ({ timeLinedatas }) => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <p className={styles.titleText}>Timeline</p>
+        <p className={styles.titleText}>타임라인</p>
         <p className={styles.titleSubText}>중요 알림이 표시됩니다.</p>
       </div>
       <div className={styles.content}>

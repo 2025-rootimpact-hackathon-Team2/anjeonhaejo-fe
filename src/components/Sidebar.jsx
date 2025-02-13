@@ -1,9 +1,17 @@
 import styles from './Sidebar.module.css';
 import { Profile, Home, Report, Setting, Logout } from '@assets/icons';
 import { useSidebar } from '@hooks/SidebarHooks';
-
+import Lottie from "lottie-react";
+import recordAnimation from '@assets/lottie/recordAnimation.json';
+import { useSelector } from 'react-redux';
+import { useRef } from 'react';
+import useDecibel from '@hooks/DecibelHooks';
 const Sidebar = () => {
   const { selected, handleMenuClick, handleLogout, user } = useSidebar();
+  const decibel = useSelector((state) => state.decibel.value);
+  const isRecording = useSelector((state) => state.decibel.isRecording);
+  const { startRecording } = useDecibel();
+  const lottieRef = useRef(null);
 
   return (
     <div className={styles.sidebar}>
@@ -38,6 +46,21 @@ const Sidebar = () => {
         >
           <Setting selected={selected === 'setting'} />
           <p>설정</p>
+        </div>
+      </div>
+      <div className={styles.sidebarFooter} onClick={startRecording}>
+        <div className={styles.recordIcon}>
+          <Lottie 
+            animationData={recordAnimation} 
+            loop={isRecording}
+            autoplay={false}
+            lottieRef={lottieRef}
+          />
+        </div>
+        <div className={styles.decibel}>
+          <p>
+            {isRecording ? decibel.toFixed(1) + ' dB' : '녹음 시작'}
+          </p>
         </div>
       </div>
     </div>
