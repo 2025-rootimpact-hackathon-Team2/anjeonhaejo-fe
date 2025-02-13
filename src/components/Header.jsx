@@ -1,7 +1,9 @@
 import styles from './Header.module.css';
 import React, { useState, useEffect, useRef } from 'react';
-
+import { Logo } from '@assets/images';
+import { useNavigate } from 'react-router-dom';
 const Header = () => {
+  const navigate = useNavigate();
   const [isRecording, setIsRecording] = useState(false);
   const [decibel, setDecibel] = useState(0);
   const postDecibelRef = useRef(0);
@@ -196,8 +198,12 @@ const Header = () => {
 
   return (
     <div className={styles.container}>
-      {/* TODO: 로고 이미지 추가 */}
-      <div className={styles.logo}>LOGO</div>
+      <div 
+        className={styles.logo} 
+        onClick={() => navigate('/')}
+      >
+        <Logo />
+      </div>
       {/* TODO: 날짜 시간 추가 */}
       <div className={styles.dateTime}>
         <div>현재 음량: {decibel.toFixed(1)} dB</div>

@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@store/slices/userSlice';
 
@@ -15,6 +15,13 @@ export const useSidebar = () => {
     if (path === '/setting') return 'setting';
     return 'home';
   });
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/') setSelected('home');
+    else if (path === '/report') setSelected('report');
+    else if (path === '/setting') setSelected('setting');
+  }, [location.pathname]);
 
   const handleMenuClick = (menu) => {
     setSelected(menu);
