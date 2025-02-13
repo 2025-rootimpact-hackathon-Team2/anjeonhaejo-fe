@@ -25,8 +25,10 @@ const Header = () => {
       audioContextRef.current = new (window.AudioContext ||
         window.webkitAudioContext)();
       analyserRef.current = audioContextRef.current.createAnalyser();
-      analyserRef.current.fftSize = 512; // 분석 크기 조정
-      dataArrayRef.current = new Float32Array(analyserRef.current.fftSize);
+      analyserRef.current.fftSize = 2048; // 분석 크기 조정
+      dataArrayRef.current = new Uint8Array(
+        analyserRef.current.frequencyBinCount
+      );
     }
   };
 
@@ -34,20 +36,31 @@ const Header = () => {
   const calculateDecibel = () => {
     if (!analyserRef.current) return;
 
-    analyserRef.current.getFloatTimeDomainData(dataArrayRef.current);
+    const dataArray = dataArrayRef.current;
+    analyserRef.current.getByteFrequencyData(dataArray);
 
     let sum = 0;
-    for (let i = 0; i < dataArrayRef.current.length; i++) {
-      sum += dataArrayRef.current[i] * dataArrayRef.current[i];
+    for (let i = 0; i < dataArray.length; i++) {
+      sum += dataArray[i] * dataArray[i];
     }
 
-    const rms = Math.sqrt(sum / dataArrayRef.current.length);
-    const decibelValue = 20 * Math.log10(rms) + 100; // 보정값 적용
+    const rms = Math.sqrt(sum / dataArray.length);
 
-    setDecibel(decibelValue);
+    let decibelValue = 20 * Math.log10(rms) + 100;
+
+    const calibration = 60;
+    const minDecibels = 0;
+    const maxDecibels = 130;
+    const adjustedDecibelValue =
+      (rms / 255) * (maxDecibels - minDecibels) + minDecibels + calibration;
+
+    setDecibel(
+      Math.min(maxDecibels, Math.max(minDecibels, adjustedDecibelValue))
+    );
 
     if (decibelValue > DECIBEL_THRESHOLD && !isCapturingRef.current) {
-      console.log('120dB 초과! 녹음 시작');
+      console.log(decibelValue, '데시벨값:::');
+      console.log('90dB 초과! 녹음 시작');
       postDecibelRef.current = decibelValue;
       isCapturingRef.current = true;
       captureAudio();
@@ -74,6 +87,7 @@ const Header = () => {
       source.connect(analyserRef.current);
 
       mediaRecorderRef.current = new MediaRecorder(stream);
+
       mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           console.log('이벤트 데이터', event.data);
@@ -117,9 +131,25 @@ const Header = () => {
     await new Promise((resolve) => setTimeout(resolve, BUFFER_DURATION * 1000));
 
     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+
+    console.log('Blob 크기:', audioBlob.size);
+    if (audioBlob.size === 0) {
+      console.error('생성된 Blob 크기가 0! 오디오 데이터가 손상되었습니다.');
+      return;
+    }
+
     const url = URL.createObjectURL(audioBlob);
-    console.log('녹음파일url', url);
     setAudioUrl(url);
+    const audio = new Audio(url);
+    audio.controls = true;
+    document.body.appendChild(audio);
+    audio.play().catch((e) => console.error('❌ 오디오 재생 오류:', e));
+
+    // 다운로드
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'test.webm';
+    a.click();
 
     sendToServer(audioBlob);
     isCapturingRef.current = false;
@@ -128,30 +158,30 @@ const Header = () => {
   // 서버로 오디오 데이터 전송
   const sendToServer = async (audioBlob) => {
     console.log(audioBlob, '오디오값!!!');
-    console.log(audioUrl);
-    console.log(decibel, postDecibelRef.current);
+    console.log('MIME 타입:', mediaRecorderRef.current.mimeType);
+
     const formData = new FormData();
     formData.append('decibel', postDecibelRef.current);
     formData.append('workerZone', 1);
     formData.append('file', audioBlob, 'audio.webm');
 
     try {
-      const response = await fetch('http://43.202.242.205:8080/audio/upload', {
+      const response = await fetch('http://15.165.87.88:8080/audio/upload', {
         method: 'POST',
         body: formData,
       });
 
       if (!response.ok) throw new Error('서버 전송 실패');
-      console.log('오디오 전송 성공');
+      console.log('✅ 오디오 전송 성공');
     } catch (error) {
-      console.error('오디오 전송 오류:', error);
+      console.error('❌ 오디오 전송 오류:', error);
     }
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      startRecording();
-    }, 1000);
+    // setTimeout(() => {
+    //   startRecording();
+    // }, 1000);
 
     return () => {
       stopRecording();
