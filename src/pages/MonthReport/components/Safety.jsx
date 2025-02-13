@@ -1,7 +1,17 @@
 import React from 'react';
 import styles from './Safety.module.css';
+import useReports from '../../../hooks/ReportHooks';
 
 export default function Safety() {
+  const {
+    reportList,
+    totalPage,
+    page,
+    handlePrevPage,
+    handleNextPage,
+    handlePageChange,
+  } = useReports();
+
   return (
     <section className={styles.section}>
       <h1>이번달 안전 보고서</h1>
@@ -23,35 +33,34 @@ export default function Safety() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>2024-02-23 / 08:00</td>
-            <td>A</td>
-            <td>
-              <span>즉시조치</span>
-            </td>
-            <td>조치완료</td>
-            <td>김말숙</td>
-          </tr>
-          <tr>
-            <td>2024-02-23 / 08:00</td>
-            <td>A</td>
-            <td>
-              <span>즉시조치</span>
-            </td>
-            <td>조치완료</td>
-            <td>김말숙</td>
-          </tr>
-          <tr>
-            <td>2024-02-23 / 08:00</td>
-            <td>A</td>
-            <td>
-              <span>즉시조치</span>
-            </td>
-            <td>조치완료</td>
-            <td>김말숙</td>
-          </tr>
+          {reportList.map((report, index) => (
+            <tr key={index}>
+              <td>{new Date(report.createdAt).toLocaleString()}</td>
+              <td>{report.workingZone}</td>
+              <td>
+                <span className={styles.tag}>#{report.tag}</span>
+                <span>{report.significant}</span>
+              </td>
+              <td>{report.status}</td>
+              <td>{report.workerName}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
+
+      <ul>
+        <li className={styles.left} onClick={handlePrevPage}></li>
+        {Array.from({ length: totalPage }, (_, index) => (
+          <li
+            key={index}
+            className={page === index ? styles.active : ''}
+            onClick={() => handlePageChange(index)}
+          >
+            {index + 1}
+          </li>
+        ))}
+        <li className={styles.right} onClick={handleNextPage}></li>
+      </ul>
     </section>
   );
 }
