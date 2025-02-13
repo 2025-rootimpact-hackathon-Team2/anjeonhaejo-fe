@@ -1,7 +1,8 @@
 import styles from './NoiseLog.module.css';
-import { DangerTriangleSmall, CheckCircleSmall } from '@assets/icons';
+import { DangerTriangleSmall, CheckCircleSmall, WarningTriangleSmall } from '@assets/icons';
+import { NOISE_COUNT } from '@constants/content';
 
-const NoiseLog = () => {
+const NoiseLog = ({ noiseLogCount }) => {
   return (
     <div className={styles.container}>
       <p className={styles.title}>소음 횟수</p>
@@ -22,11 +23,18 @@ const NoiseLog = () => {
               <p>용광로</p>
             </td>
             <td>
-              <span className={styles.countWarning}>6</span>
+              <span className={noiseLogCount > 0 ? styles.countWarning : ''}>
+                {noiseLogCount}
+              </span>
               <span>회</span>
             </td>
             <td>
-              <DangerTriangleSmall />
+              {noiseLogCount > NOISE_COUNT.DANGER
+                ? <DangerTriangleSmall />
+                : noiseLogCount > NOISE_COUNT.WARNING
+                  ? <WarningTriangleSmall />
+                  : <CheckCircleSmall />
+              }
             </td>
           </tr>
           <tr>

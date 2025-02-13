@@ -23,7 +23,6 @@
 }
 
 .sidebarMenu {
-  margin-top: 21px;
   display: flex;
   flex-direction: column;
 }
