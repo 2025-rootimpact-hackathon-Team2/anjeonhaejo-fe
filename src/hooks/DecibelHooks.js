@@ -6,6 +6,8 @@ const useDecibel = () => {
   const dispatch = useDispatch();
   const decibel = useSelector((state) => state.decibel.value);
   const isRecording = useSelector((state) => state.decibel.isRecording);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
 
   const [audioUrl, setAudioUrl] = useState(null);
 
@@ -20,7 +22,7 @@ const useDecibel = () => {
   const isRecordingRef = useRef(false);
 
   const BUFFER_DURATION = 10; // 전후 10초 녹음
-  const DECIBEL_THRESHOLD = 90; // 기준값 90dB
+  const DECIBEL_THRESHOLD = 95; // 기준값 90dB
 
   // 오디오 컨텍스트 초기화
   const initAudioContext = async () => {
@@ -62,9 +64,11 @@ const useDecibel = () => {
     // 기준 데시벨을 넘으면 녹음 실행 (녹음 로직은 그대로 유지)
     if (adjustedDecibel > DECIBEL_THRESHOLD && !isCapturingRef.current) {
       isCapturingRef.current = true;
-      console.log("adjustedDecibel:::", adjustedDecibel);
       console.log('최종 데시벨 값:', adjustedDecibel);
       console.log('90dB 초과! 녹음 시작');
+
+      setIsModalOpen(true);
+      setIsLoading(true);
 
       captureAudio(adjustedDecibel).then(() => {
         stopRecording();
@@ -179,15 +183,27 @@ const useDecibel = () => {
 
       if (!response.ok) throw new Error('서버 전송 실패');
       console.log('오디오 전송 성공');
+      window.location.reload();
     } catch (error) {
       console.error('오디오 전송 오류:', error);
+      window.location.reload();
     }
   };
+
+  const handleConfirm = () => {
+    setIsModalOpen(false);
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setIsLoading(false);
+  }
 
   useEffect(() => {
     // setTimeout(() => {
     //   startRecording();
     // }, 1000);
+    // startRecording();
 
     return () => {
       stopRecording();
@@ -197,7 +213,18 @@ const useDecibel = () => {
     };
   }, []);
 
-  return { decibel, isRecording, startRecording, stopRecording };
+  return { 
+    decibel, 
+    isRecording, 
+    startRecording, 
+    stopRecording,
+    isModalOpen,
+    setIsModalOpen,
+    handleConfirm,
+    handleCancel,
+    isLoading,
+  };
 }
 
 export default useDecibel;
+

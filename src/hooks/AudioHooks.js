@@ -28,6 +28,7 @@ export const useAudio = () => {
   const filterTodayData = (transformedData) => {
     const today = format(new Date(), 'yyyy-MM-dd');
     const todayAudioDatas = transformedData.filter(data => data.date === today);
+    todayAudioDatas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     return todayAudioDatas;
   }
 
