@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  
+  margin-top: 22px;
+  border-top: 1px solid #ececec;
+  padding-top: 27px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.infoItem {
+  margin-top: 25px;
+  color: #C0C0C0;
+  font-size: 14px;
+  display: flex;
+  gap: 90px;
+}
+

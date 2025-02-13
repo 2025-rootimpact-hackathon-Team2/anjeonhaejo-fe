@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import UserReportView from './pages/user/UserReportView';
 import Dashboard from './pages/Dashboard';
+import Setting from './pages/Setting';
 import Modal from './components/Modal';
 import { useState } from 'react';
 import MobileLayout from './components/mobile/MobileLayout';
@@ -17,6 +18,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/report" element={<MonthReport />} />
+          <Route path="/setting" element={<Setting />} />
         </Route>
         <Route element={<MobileLayout />}>
           <Route path="/user" element={<UserReportView />} />
