@@ -15,6 +15,7 @@ const Header = () => {
   const mediaStreamRef = useRef(null);
   const audioChunksRef = useRef([]);
   const isCapturingRef = useRef(false);
+  const isRecordingRef = useRef(false);
 
   const BUFFER_DURATION = 10; // 전후 10초 녹음
   const DECIBEL_THRESHOLD = 90; // 기준값 90dB
@@ -32,38 +33,40 @@ const Header = () => {
     }
   };
 
-  // 실시간 데시벨 계산
   const calculateDecibel = () => {
-    if (!analyserRef.current) return;
+    if (!analyserRef.current || !isRecordingRef.current) return;
 
     const dataArray = dataArrayRef.current;
-    analyserRef.current.getByteFrequencyData(dataArray);
+    analyserRef.current.getByteTimeDomainData(dataArray); // 시간 도메인 데이터 사용
 
     let sum = 0;
     for (let i = 0; i < dataArray.length; i++) {
-      sum += dataArray[i] * dataArray[i];
+      let normalized = dataArray[i] / 128 - 1; // -1 ~ 1로 정규화
+      sum += normalized * normalized;
     }
+    const rms = Math.sqrt(sum / dataArray.length); // RMS 계산
 
-    const rms = Math.sqrt(sum / dataArray.length);
+    // RMS 값에서 데시벨 계산
+    let decibelValue = 20 * Math.log10(rms) + 105; // 보정값을 +105로 변경
 
-    let decibelValue = 20 * Math.log10(rms) + 100;
+    // 최소/최대 데시벨 보정
+    const minDecibels = 40; // 최소값 40dB
+    const maxDecibels = 130; // 최대값 130dB
+    decibelValue = Math.max(minDecibels, Math.min(maxDecibels, decibelValue));
 
-    const calibration = 60;
-    const minDecibels = 0;
-    const maxDecibels = 130;
-    const adjustedDecibelValue =
-      (rms / 255) * (maxDecibels - minDecibels) + minDecibels + calibration;
+    setDecibel(decibelValue);
 
-    setDecibel(
-      Math.min(maxDecibels, Math.max(minDecibels, adjustedDecibelValue))
-    );
-
+    // 기준 데시벨을 넘으면 녹음 시작
     if (decibelValue > DECIBEL_THRESHOLD && !isCapturingRef.current) {
-      console.log(decibelValue, '데시벨값:::');
-      console.log('90dB 초과! 녹음 시작');
-      postDecibelRef.current = decibelValue;
       isCapturingRef.current = true;
-      captureAudio();
+      postDecibelRef.current = decibelValue;
+      console.log('📊 최종 데시벨 값:', postDecibelRef.current);
+      console.log('🔴 90dB 초과! 녹음 시작');
+
+      captureAudio().then(() => {
+        stopRecording();
+        console.log('✅ 녹음 종료 및 서버 전송 완료');
+      });
     }
   };
 
@@ -76,8 +79,11 @@ const Header = () => {
     animationFrameId.current = requestAnimationFrame(update);
   };
 
-  // 녹음 시작
+  // 녹음 시작 (한 번만 실행되도록 보완)
   const startRecording = async () => {
+    if (isRecordingRef.current) return; // 🔴 녹음 중이면 실행 안 함
+    isRecordingRef.current = true; // 녹음 시작 상태 설정
+
     try {
       await initAudioContext();
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -87,81 +93,69 @@ const Header = () => {
       source.connect(analyserRef.current);
 
       mediaRecorderRef.current = new MediaRecorder(stream);
-
       mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          console.log('이벤트 데이터', event.data);
           audioChunksRef.current.push(event.data);
-          console.log(
-            'audioChunk값!!!',
-            audioChunksRef.current,
-            audioChunksRef.current.length
-          );
 
-          // 10초 버퍼 유지
           const maxChunks = Math.ceil(BUFFER_DURATION);
           if (audioChunksRef.current.length > maxChunks) {
-            audioChunksRef.current.shift(); // 가장 오래된 데이터 삭제
+            audioChunksRef.current.shift();
           }
         }
       };
 
-      mediaRecorderRef.current.start(1000); // 1초마다 데이터 저장
+      mediaRecorderRef.current.start(1000);
       setIsRecording(true);
       startDecibelMonitoring();
     } catch (error) {
       console.error('녹음 시작 실패:', error);
+      isRecordingRef.current = false; // 실패 시 상태 초기화
     }
   };
 
-  // 녹음 중지
+  // 녹음 중지 (상태값 초기화 추가)
   const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+    }
     if (mediaStreamRef.current) {
       mediaStreamRef.current.getTracks().forEach((track) => track.stop());
     }
     if (animationFrameId.current) {
       cancelAnimationFrame(animationFrameId.current);
     }
+
+    isRecordingRef.current = false; // 🔴 녹음 중단 상태 반영
+    isCapturingRef.current = false;
     setIsRecording(false);
     setDecibel(0);
   };
 
-  // 전후 10초 녹음 파일 저장 및 전송
+  // 녹음 후 서버 전송
   const captureAudio = async () => {
+    console.log('🎤 녹음 시작: 버퍼 유지 중...');
     await new Promise((resolve) => setTimeout(resolve, BUFFER_DURATION * 1000));
 
-    const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-
-    console.log('Blob 크기:', audioBlob.size);
-    if (audioBlob.size === 0) {
-      console.error('생성된 Blob 크기가 0! 오디오 데이터가 손상되었습니다.');
+    if (audioChunksRef.current.length === 0) {
+      console.warn('⚠ 녹음된 데이터가 없습니다.');
+      isCapturingRef.current = false;
       return;
     }
 
+    const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
     const url = URL.createObjectURL(audioBlob);
+    console.log('🎵 녹음된 파일 URL:', url);
     setAudioUrl(url);
-    const audio = new Audio(url);
-    audio.controls = true;
-    document.body.appendChild(audio);
-    audio.play().catch((e) => console.error('❌ 오디오 재생 오류:', e));
 
-    // 다운로드
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'test.webm';
-    a.click();
-
-    sendToServer(audioBlob);
-    isCapturingRef.current = false;
+    await sendToServer(audioBlob);
+    stopRecording(); // 🔴 전송 후 녹음 완전히 중지
   };
 
   // 서버로 오디오 데이터 전송
   const sendToServer = async (audioBlob) => {
-    console.log(audioBlob, '오디오값!!!');
-    console.log('MIME 타입:', mediaRecorderRef.current.mimeType);
-
+    console.log('🚀 서버로 오디오 파일 전송 중...');
     const formData = new FormData();
-    formData.append('decibel', postDecibelRef.current);
+    formData.append('decibel', postDecibelRef.current.toFixed(1));
     formData.append('workerZone', 1);
     formData.append('file', audioBlob, 'audio.webm');
 
