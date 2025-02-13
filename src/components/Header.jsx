@@ -37,35 +37,36 @@ const Header = () => {
     if (!analyserRef.current || !isRecordingRef.current) return;
 
     const dataArray = dataArrayRef.current;
-    analyserRef.current.getByteTimeDomainData(dataArray); // 시간 도메인 데이터 사용
+    analyserRef.current.getByteFrequencyData(dataArray);
 
     let sum = 0;
     for (let i = 0; i < dataArray.length; i++) {
-      let normalized = dataArray[i] / 128 - 1; // -1 ~ 1로 정규화
-      sum += normalized * normalized;
+      sum += dataArray[i] * dataArray[i];
     }
-    const rms = Math.sqrt(sum / dataArray.length); // RMS 계산
+    const rms = Math.sqrt(sum / dataArray.length);
 
-    // RMS 값에서 데시벨 계산
-    let decibelValue = 20 * Math.log10(rms) + 105; // 보정값을 +105로 변경
+    // 실제 RMS 값을 기준으로 데시벨 계산
+    let decibelValue = 20 * Math.log10(rms) + 100;
 
-    // 최소/최대 데시벨 보정
-    const minDecibels = 40; // 최소값 40dB
-    const maxDecibels = 130; // 최대값 130dB
-    decibelValue = Math.max(minDecibels, Math.min(maxDecibels, decibelValue));
+    // 화면에 표시되는 데시벨 값 보정
+    const calibration = 45;
+    const adjustedDecibel = decibelValue - calibration;
 
-    setDecibel(decibelValue);
+    const minDecibels = 0;
+    const maxDecibels = 130;
 
-    // 기준 데시벨을 넘으면 녹음 시작
-    if (decibelValue > DECIBEL_THRESHOLD && !isCapturingRef.current) {
+    setDecibel(Math.min(maxDecibels, Math.max(minDecibels, adjustedDecibel)));
+
+    // 기준 데시벨을 넘으면 녹음 실행 (녹음 로직은 그대로 유지)
+    if (adjustedDecibel > DECIBEL_THRESHOLD && !isCapturingRef.current) {
       isCapturingRef.current = true;
-      postDecibelRef.current = decibelValue;
-      console.log('📊 최종 데시벨 값:', postDecibelRef.current);
-      console.log('🔴 90dB 초과! 녹음 시작');
+      postDecibelRef.current = adjustedDecibel;
+      console.log('최종 데시벨 값:', postDecibelRef.current);
+      console.log('90dB 초과! 녹음 시작');
 
       captureAudio().then(() => {
         stopRecording();
-        console.log('✅ 녹음 종료 및 서버 전송 완료');
+        console.log('녹음 종료 및 서버 전송 완료');
       });
     }
   };
@@ -81,7 +82,7 @@ const Header = () => {
 
   // 녹음 시작 (한 번만 실행되도록 보완)
   const startRecording = async () => {
-    if (isRecordingRef.current) return; // 🔴 녹음 중이면 실행 안 함
+    if (isRecordingRef.current) return;
     isRecordingRef.current = true; // 녹음 시작 상태 설정
 
     try {
@@ -102,6 +103,7 @@ const Header = () => {
             audioChunksRef.current.shift();
           }
         }
+        console.log(audioChunksRef.current);
       };
 
       mediaRecorderRef.current.start(1000);
@@ -125,7 +127,7 @@ const Header = () => {
       cancelAnimationFrame(animationFrameId.current);
     }
 
-    isRecordingRef.current = false; // 🔴 녹음 중단 상태 반영
+    isRecordingRef.current = false; // 녹음 중단 상태 반영
     isCapturingRef.current = false;
     setIsRecording(false);
     setDecibel(0);
@@ -144,16 +146,23 @@ const Header = () => {
 
     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
     const url = URL.createObjectURL(audioBlob);
-    console.log('🎵 녹음된 파일 URL:', url);
+    console.log('녹음된 파일 URL:', url);
     setAudioUrl(url);
+    // Blob을 다운로드하여 확인하는 코드
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'recorded_audio.webm';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
     await sendToServer(audioBlob);
-    stopRecording(); // 🔴 전송 후 녹음 완전히 중지
+    stopRecording(); // 전송 후 녹음 완전히 중지
   };
 
   // 서버로 오디오 데이터 전송
   const sendToServer = async (audioBlob) => {
-    console.log('🚀 서버로 오디오 파일 전송 중...');
+    console.log('서버로 오디오 파일 전송 중...');
     const formData = new FormData();
     formData.append('decibel', postDecibelRef.current.toFixed(1));
     formData.append('workerZone', 1);
@@ -166,9 +175,9 @@ const Header = () => {
       });
 
       if (!response.ok) throw new Error('서버 전송 실패');
-      console.log('✅ 오디오 전송 성공');
+      console.log('오디오 전송 성공');
     } catch (error) {
-      console.error('❌ 오디오 전송 오류:', error);
+      console.error('오디오 전송 오류:', error);
     }
   };
 
