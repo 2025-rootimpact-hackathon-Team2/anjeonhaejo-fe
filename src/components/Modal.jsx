@@ -11,7 +11,7 @@ const Modal = ({ onClose, handleConfirm, handleCancel }) => {
         <DangerTriangleBig />
         <p className={styles.modalTitle}>위험!</p>
         <p className={styles.modalContent}>
-          A구역에서 105dB 이상의 음을 감지했습니다. <br />
+          A구역에서 95dB 이상의 음을 감지했습니다. <br />
           분석을 시작합니다.
         </p>
         <div>

@@ -53,7 +53,7 @@ const useDecibel = () => {
     let decibelValue = 20 * Math.log10(rms) + 100;
 
     // 화면에 표시되는 데시벨 값 보정
-    const calibration = 40;
+    const calibration = 45;
     const adjustedDecibel = decibelValue - calibration;
 
     const minDecibels = 0;
@@ -187,6 +187,7 @@ const useDecibel = () => {
     } catch (error) {
       console.error('오디오 전송 오류:', error);
       window.location.reload();
+      alert('위험으로 분류된 음성이 분석되지 않았습니다');
     }
   };
 
