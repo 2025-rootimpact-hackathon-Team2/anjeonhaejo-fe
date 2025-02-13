@@ -192,7 +192,7 @@ const useDecibel = () => {
     } catch (error) {
       console.error('오디오 전송 오류:', error);
       window.location.reload();
-      alert('위험으로 분류된 음성이 분석되지 않았습니다');
+      alert('분석한 음성이 위험으로 감지되지 않았습니다.');
     }
   };
 
