@@ -11,7 +11,7 @@ const Sidebar = () => {
         <Profile />
         <div>
           <p className={styles.name}>{user.name}</p>
-          <p>{user.role}</p>
+          <p>{user.role === 'MANAGER' ? '관리자' : '작업자'}</p>
         </div>
         <div className={styles.logout} onClick={handleLogout}>
           <Logout />

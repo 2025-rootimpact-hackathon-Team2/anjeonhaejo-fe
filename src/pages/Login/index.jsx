@@ -1,8 +1,8 @@
 import styles from './Login.module.css';
-import { useLogin } from '@hooks/LoginHooks';
+import { useUser } from '@hooks/UserHooks';
 
 const Login = () => {
-  const { email, password, setEmail, setPassword, handleLogin } = useLogin();
+  const { email, password, setEmail, setPassword, handleLogin } = useUser();
   return (
     <div className={styles.container}>
       <p className={styles.title}>로그인</p>

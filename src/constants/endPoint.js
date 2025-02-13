@@ -7,6 +7,7 @@ export const USER_URL = {
   register: '/user/register',
   logout: '/user/logout',
   login: '/user/login',
+  mypage: (userId) => `/api/v1/mypage/${userId}`,
 }
 
 export const REPORT_URL = {

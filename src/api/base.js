@@ -33,8 +33,8 @@ export const del = async (url, data) => {
   return response;
 }
 
-export const patch = async (url, data) => {
-  const response = await axiosClient.patch(url, data);
+export const put = async (url, data) => {
+  const response = await axiosClient.put(url, data);
   return response;
 }
 
