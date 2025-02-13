@@ -4,7 +4,7 @@ import Decibel from './components/Decibel';
 import Issue from './components/Issue';
 import MonthTrend from './components/MonthTrend';
 import Safety from './components/Safety';
-import useDecibelData from '../../hooks/DecibelHooks';
+import useDecibelData from '../../hooks/DbValueHooks';
 
 const MonthReport = () => {
   const [formattedDate, setFormattedDate] = useState(
