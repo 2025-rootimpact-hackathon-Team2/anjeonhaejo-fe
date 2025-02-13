@@ -85,7 +85,15 @@ input[type='date'] {
   font-size: 12px;
 }
 
+.section {
+  width: 70.1875rem;
+  height: 26.9375rem;
+  flex-shrink: 0;
+}
+
 .chart {
   width: 100%;
-  height: 385px;
+  height: 20rem;
+  display: flex;
+  justify-content: center;
 }
