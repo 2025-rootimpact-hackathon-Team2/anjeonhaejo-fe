@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: var(--color-white);
+  width: 635px;
+  height: 733px;
+  border-radius: 15px;
+  padding: 47px 45px;
+  margin: 0 auto;
+  align-self: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.inputContainer {
+  margin-top: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+}
+
+.inputItem {
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputItem input {
+  background-color: var(--color-background);
+  border-radius: 18px;
+  height: 60px;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0 29px;
+  border: none;
+  margin-top: 5px;
+}
+
+.loginButton {
+  background-color: #202020;
+  color: var(--color-white);
+  width: 100%;
+  border-radius: 10px;
+  height: 50px;
+  font-size: 20px;
+  margin-top: 72px;
+  cursor: pointer;
+}
