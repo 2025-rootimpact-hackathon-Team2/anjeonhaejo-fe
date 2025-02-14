@@ -181,7 +181,7 @@ const useDecibel = () => {
     formData.append('file', audioBlob, 'audio.webm');
 
     try {
-      const response = await fetch('https://api.anjeons.com', {
+      const response = await fetch('https://api.anjeons.com/audio/upload', {
         method: 'POST',
         body: formData,
       });
